@@ -1,0 +1,6 @@
+Invoking command in '/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/ubuntu/dev_ws/src/slam-bot -DCMAKE_INSTALL_PREFIX=/home/ubuntu/dev_ws/src/slam-bot/install/slam_bot
+Invoked command in '/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/ubuntu/dev_ws/src/slam-bot -DCMAKE_INSTALL_PREFIX=/home/ubuntu/dev_ws/src/slam-bot/install/slam_bot
+Invoking command in '/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/ubuntu/dev_ws/src/slam-bot/build/slam_bot -- -j4 -l4
+Invoked command in '/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/ubuntu/dev_ws/src/slam-bot/build/slam_bot -- -j4 -l4
+Invoking command in '/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/ubuntu/dev_ws/src/slam-bot/build/slam_bot
+Invoked command in '/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/ubuntu/dev_ws/src/slam-bot/build/slam_bot

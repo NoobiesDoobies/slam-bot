@@ -1,0 +1,31 @@
+[0.040s] Invoking command in '/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/ubuntu/dev_ws/src/slam-bot -DCMAKE_INSTALL_PREFIX=/home/ubuntu/dev_ws/src/slam-bot/install/slam_bot
+[1.195s] -- The C compiler identification is GNU 9.4.0
+[2.245s] -- The CXX compiler identification is GNU 9.4.0
+[2.274s] -- Check for working C compiler: /usr/bin/cc
+[2.719s] -- Check for working C compiler: /usr/bin/cc -- works
+[2.726s] -- Detecting C compiler ABI info
+[3.098s] -- Detecting C compiler ABI info - done
+[3.139s] -- Detecting C compile features
+[3.141s] -- Detecting C compile features - done
+[3.156s] -- Check for working CXX compiler: /usr/bin/c++
+[3.523s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[3.527s] -- Detecting CXX compiler ABI info
+[3.929s] -- Detecting CXX compiler ABI info - done
+[3.968s] -- Detecting CXX compile features
+[3.970s] -- Detecting CXX compile features - done
+[3.990s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[4.112s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[4.112s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[5.065s] -- Found ament_lint_auto: 0.9.8 (/opt/ros/foxy/share/ament_lint_auto/cmake)
+[5.287s] CMake Error at /opt/ros/foxy/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:53 (message):
+[5.288s]   ament_package_xml() package name 'slam_bot' in '/package.xml' does not
+[5.288s]   match current PROJECT_NAME 'my_bot'.  You must call project() with the same
+[5.288s]   package name before.
+[5.288s] Call Stack (most recent call first):
+[5.289s]   /opt/ros/foxy/share/ament_lint_auto/cmake/ament_lint_auto_find_test_dependencies.cmake:31 (ament_package_xml)
+[5.289s]   CMakeLists.txt:32 (ament_lint_auto_find_test_dependencies)
+[5.289s] 
+[5.289s] 
+[5.292s] -- Configuring incomplete, errors occurred!
+[5.292s] See also "/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/CMakeOutput.log".
+[5.305s] Invoked command in '/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot' returned '1': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/ubuntu/dev_ws/src/slam-bot -DCMAKE_INSTALL_PREFIX=/home/ubuntu/dev_ws/src/slam-bot/install/slam_bot
