@@ -1,1 +1,0 @@
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/ament_cmake_environment_hooks/local_setup.zsh

@@ -1,9 +1,0 @@
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/install/strip.dir
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/install/local.dir
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/install.dir
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/list_install_components.dir
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/rebuild_cache.dir
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/edit_cache.dir
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/test.dir
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/slam_bot_uninstall.dir
-/home/ubuntu/dev_ws/src/slam-bot/build/slam_bot/CMakeFiles/uninstall.dir

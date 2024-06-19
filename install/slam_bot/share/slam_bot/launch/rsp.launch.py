@@ -1,1 +1,0 @@
-/home/ubuntu/dev_ws/src/slam-bot/launch/rsp.launch.py
