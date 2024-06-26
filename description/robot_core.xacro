@@ -127,13 +127,13 @@
     <link name="caster_wheel">
         <visual>
             <geometry>
-                <sphere radius="0.05"/>
+                <sphere radius="0.065"/>
             </geometry>
             <material name="black"/>
         </visual>
         <collision>
             <geometry>
-                <sphere radius="0.05"/>
+                <sphere radius="0.065"/>
             </geometry>
         </collision>
         <xacro:inertial_sphere mass="0.1" radius="0.05">
