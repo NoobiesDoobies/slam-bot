@@ -6,8 +6,8 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command
-from launch.actions import RegisterEventHandler
+from launch.substitutions import Command, LaunchConfiguration, PythonExpression
+from launch.actions import RegisterEventHandler, DeclareLaunchArgument
 from launch.event_handlers import OnProcessStart
 
 from launch_ros.actions import Node
@@ -21,6 +21,13 @@ def generate_launch_description():
     # !!! MAKE SURE YOU SET THE PACKAGE NAME CORRECTLY !!!
 
     package_name='slam_bot' #<--- CHANGE ME
+    sim_mode = LaunchConfiguration('sim_mode')
+    sim_mode_dec = DeclareLaunchArgument('sim_mode', default_value='false')
+
+    tracker_params_sim = os.path.join(get_package_share_directory(package_name),'config','ball_tracker_params_sim.yaml')
+    tracker_params_robot = os.path.join(get_package_share_directory(package_name),'config','ball_tracker_params_robot.yaml')
+
+    params_path = PythonExpression(['"',tracker_params_sim, '" if "true" == "', sim_mode, '" else "', tracker_params_robot, '"'])
 
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
