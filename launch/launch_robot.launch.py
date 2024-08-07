@@ -15,12 +15,8 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-
-
-    # Include the robot_state_publisher launch file, provided by our own package. Force sim time to be enabled
-    # !!! MAKE SURE YOU SET THE PACKAGE NAME CORRECTLY !!!
-
-    package_name='slam_bot' #<--- CHANGE ME
+    
+    package_name='slam_bot' 
     sim_mode = LaunchConfiguration('sim_mode')
     sim_mode_dec = DeclareLaunchArgument('sim_mode', default_value='false')
 
@@ -29,9 +25,9 @@ def generate_launch_description():
 
     params_path = PythonExpression(['"',tracker_params_sim, '" if "true" == "', sim_mode, '" else "', tracker_params_robot, '"'])
 
-    rsp = IncludeLaunchDescription(
+    robot_spawner = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory(package_name),'launch','rsp.launch.py'
+                    get_package_share_directory(package_name),'launch','robot_spawner.launch.py'
                 )]), launch_arguments={'use_sim_time': 'false', 'use_ros2_control': 'true'}.items()
     )
 
@@ -64,7 +60,7 @@ def generate_launch_description():
                     controller_params_file]
     )
 
-    delayed_controller_manager = TimerAction(period=3.0, actions=[controller_manager])
+    delayed_controller_manager = TimerAction(period=1.0, actions=[controller_manager])
 
     diff_drive_spawner = Node(
         package="controller_manager",
@@ -113,7 +109,7 @@ def generate_launch_description():
 
     # Launch them all!
     return LaunchDescription([
-        rsp,
+        robot_spawner,
         joystick,
         # twist_mux,
         delayed_controller_manager,
