@@ -6,6 +6,9 @@ from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
+from launch_ros.substitutions import FindPackageShare
+
 
 import xacro
 
@@ -18,19 +21,31 @@ def generate_launch_description():
 
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory('slam_bot'))
-    xacro_file = os.path.join(pkg_path,'description','robot.urdf.xacro')
-    gazebo_launch_file = os.path.join(pkg_path,'launch','gazebo.launch.py')
 
-    # robot_description_config = xacro.process_file(xacro_file).toxml()
-    robot_description_config = Command(['xacro ', xacro_file, ' use_ros2_control:=', use_ros2_control, ' sim_mode:=', use_sim_time])
-
+    # Get URDF via xacro
+    robot_description_config = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution(
+                [FindPackageShare("slam_bot"), "description", "urdf", "robot.urdf.xacro"]
+            ),
+            " ",
+            "sim_mode:=",
+            use_sim_time,
+        ]
+    )
     # Create a robot_state_publisher node
     params = {'robot_description': robot_description_config, 'use_sim_time': use_sim_time}
+
     node_robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        output='screen',
-        parameters=[params]
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="both",
+        parameters=[params],
+        remappings=[
+            ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
+        ],
     )
 
     # Launch!

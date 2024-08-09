@@ -21,8 +21,8 @@ def generate_launch_description():
             package='teleop_twist_joy',
             executable='teleop_node',
             name='teleop_node',
-            parameters=[joy_params, {'use_sim_time': use_sim_time}],
-            remappings=[('/cmd_vel','/cmd_vel_joy')]
+            parameters=[joy_params, {'use_sim_time': use_sim_time, 'publish_stamped_twist': True}],
+            remappings=[('/cmd_vel','/diffbot_base_controller/cmd_vel')]
          )
 
     # twist_stamper = Node(
