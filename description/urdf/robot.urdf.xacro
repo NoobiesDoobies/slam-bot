@@ -9,7 +9,6 @@
   <!-- Import Rviz colors -->
   <xacro:include filename="$(find slam_bot)/description/urdf/diffbot.materials.xacro" />
 
-  <!-- Import diffbot ros2_control description -->
   <xacro:include filename="$(find slam_bot)/description/ros2_control/ros2_control.xacro" />
 
   <xacro:diffbot prefix="$(arg prefix)" />
