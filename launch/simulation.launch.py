@@ -58,18 +58,6 @@ def generate_launch_description():
 
     controller_params_file = os.path.join(get_package_share_directory(package_name),'config','diffbot_controllers.yaml')
 
-    controller_manager = Node(
-        package="controller_manager",
-        executable="ros2_control_node",
-        parameters=[{'robot_description': robot_description},
-                    controller_params_file],
-        output="both",
-        remappings=[
-            ("~/robot_description", "/robot_description"),
-        ],
-    )
-
-    delayed_controller_manager = TimerAction(period=1.0, actions=[controller_manager])
 
     diff_drive_spawner = Node(
         package="controller_manager",
@@ -77,12 +65,7 @@ def generate_launch_description():
         arguments=["diffbot_base_controller"],
     )
 
-    delayed_diff_drive_spawner = RegisterEventHandler(
-        event_handler=OnProcessStart(
-            target_action=controller_manager,
-            on_start=[diff_drive_spawner],
-        )
-    )
+
 
     joint_broad_spawner = Node(
         package="controller_manager",
@@ -90,12 +73,7 @@ def generate_launch_description():
         arguments=["joint_state_broadcaster"],
     )
 
-    delayed_joint_broad_spawner = RegisterEventHandler(
-        event_handler=OnProcessStart(
-            target_action=controller_manager,
-            on_start=[joint_broad_spawner],
-        )
-    )
+
     gazebo_params_file = os.path.join(get_package_share_directory(package_name),'config','gazebo_params.yaml')
 
     # Include the Gazebo launch file, provided by the gazebo_ros package
@@ -104,16 +82,20 @@ def generate_launch_description():
                     get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
                     launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file}.items()
              )
-
+    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+                        arguments=['-topic', 'robot_description',
+                                   '-entity', 'my_bot'],
+                        output='screen')
 
     # Launch them all!
     return LaunchDescription([
         use_ros2_control_dec,
         robot_spawner,
         gazebo,
+        spawn_entity,
         # joystick,
         # twist_mux,
-        delayed_controller_manager,
-        delayed_diff_drive_spawner,
-        delayed_joint_broad_spawner
+        # delayed_controller_manager,
+        diff_drive_spawner,
+        joint_broad_spawner
     ])
