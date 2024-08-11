@@ -17,18 +17,15 @@ from launch_ros.actions import Node
 def generate_launch_description():
     
     package_name='slam_bot' 
-    sim_mode = LaunchConfiguration('sim_mode')
-    sim_mode_dec = DeclareLaunchArgument('sim_mode', default_value='false')
 
     tracker_params_sim = os.path.join(get_package_share_directory(package_name),'config','ball_tracker_params_sim.yaml')
     tracker_params_robot = os.path.join(get_package_share_directory(package_name),'config','ball_tracker_params_robot.yaml')
 
-    params_path = PythonExpression(['"',tracker_params_sim, '" if "true" == "', sim_mode, '" else "', tracker_params_robot, '"'])
 
     robot_spawner = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','robot_spawner.launch.py'
-                )]), launch_arguments={'use_sim_time': 'false', 'use_ros2_control': 'true'}.items()
+                )]), launch_arguments={'sim_mode': 'false', 'use_ros2_control':  'true'}.items()
     )
 
     joystick = IncludeLaunchDescription(
@@ -57,7 +54,11 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[{'robot_description': robot_description},
-                    controller_params_file]
+                    controller_params_file],
+        output="both",
+        # remappings=[
+        #     ("~/robot_description", "/robot_description"),
+        # ],
     )
 
     delayed_controller_manager = TimerAction(period=1.0, actions=[controller_manager])
@@ -87,24 +88,6 @@ def generate_launch_description():
             on_start=[joint_broad_spawner],
         )
     )
-
-
-    # Code for delaying a node (I haven't tested how effective it is)
-    # 
-    # First add the below lines to imports
-    # from launch.actions import RegisterEventHandler
-    # from launch.event_handlers import OnProcessExit
-    #
-    # Then add the following below the current diff_drive_spawner
-    # delayed_diff_drive_spawner = RegisterEventHandler(
-    #     event_handler=OnProcessExit(
-    #         target_action=spawn_entity,
-    #         on_exit=[diff_drive_spawner],
-    #     )
-    # )
-    #
-    # Replace the diff_drive_spawner in the final return with delayed_diff_drive_spawner
-
 
 
     # Launch them all!

@@ -1,74 +1,119 @@
 import os
 
 from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, OpaqueFunction
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration
 
-def include_joystick(context, *args, **kwargs):
-    is_joystick = LaunchConfiguration('isJoystick').perform(context)
-    if is_joystick.lower() == 'true':
-        package_name = 'slam_bot'
-        return [IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([os.path.join(
-                get_package_share_directory(package_name), 'launch', 'joystick.launch.py'
-            )]), launch_arguments={'use_sim_time': 'true'}.items()
-        )]
-    return []
+
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import Command, LaunchConfiguration, PythonExpression
+from launch.actions import RegisterEventHandler, DeclareLaunchArgument
+from launch.event_handlers import OnProcessStart
+
+from launch_ros.actions import Node
+
+
 
 def generate_launch_description():
-    # Declare the launch argument
-    is_joystick_arg = DeclareLaunchArgument(
-        'isJoystick',
-        default_value='False',
-        description='Flag to enable joystick launch'
+    
+    package_name='slam_bot' 
+
+    use_ros2_control = LaunchConfiguration('use_ros2_control')
+
+    use_ros2_control_dec = DeclareLaunchArgument(
+        'use_ros2_control',
+        default_value='true',
+        description='Use ros2 control if true'
     )
 
-    # Include the robot_state_publisher launch file, provided by our own package. Force sim time to be enabled
-    package_name = 'slam_bot'  # <--- CHANGE ME
+    tracker_params_sim = os.path.join(get_package_share_directory(package_name),'config','ball_tracker_params_sim.yaml')
+    tracker_params_robot = os.path.join(get_package_share_directory(package_name),'config','ball_tracker_params_robot.yaml')
+
 
     robot_spawner = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory(package_name), 'launch', 'robot_spawner.launch.py'
-        )]), launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'true'}.items()
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(package_name),'launch','robot_spawner.launch.py'
+                )]), launch_arguments={'sim_mode': 'true', 'use_ros2_control': use_ros2_control}.items()
     )
 
-    gazebo_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'gazebo_params.yaml')
-
-    # Include the Gazebo launch file, provided by the gazebo_ros package
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-        launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file}.items()
+    joystick = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(package_name),'launch','joystick.launch.py'
+                )])
     )
 
-    # Run the spawner node from the gazebo_ros package. The entity name doesn't really matter if you only have a single robot.
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
-                        arguments=['-topic', 'robot_description',
-                                   '-entity', 'my_bot'],
-                        output='screen')
+
+    # twist_mux_params = os.path.join(get_package_share_directory(package_name),'config','twist_mux.yaml')
+    # twist_mux = Node(
+    #         package="twist_mux",
+    #         executable="twist_mux",
+    #         parameters=[twist_mux_params],
+    #         remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
+    #     )
+
+    
+
+
+    robot_description = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
+
+    controller_params_file = os.path.join(get_package_share_directory(package_name),'config','diffbot_controllers.yaml')
+
+    controller_manager = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[{'robot_description': robot_description},
+                    controller_params_file],
+        output="both",
+        remappings=[
+            ("~/robot_description", "/robot_description"),
+        ],
+    )
+
+    delayed_controller_manager = TimerAction(period=1.0, actions=[controller_manager])
 
     diff_drive_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["diff_cont"],
+        arguments=["diffbot_base_controller"],
+    )
+
+    delayed_diff_drive_spawner = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=controller_manager,
+            on_start=[diff_drive_spawner],
+        )
     )
 
     joint_broad_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_broad"],
+        arguments=["joint_state_broadcaster"],
     )
+
+    delayed_joint_broad_spawner = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=controller_manager,
+            on_start=[joint_broad_spawner],
+        )
+    )
+    gazebo_params_file = os.path.join(get_package_share_directory(package_name),'config','gazebo_params.yaml')
+
+    # Include the Gazebo launch file, provided by the gazebo_ros package
+    gazebo = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
+                    launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file}.items()
+             )
+
 
     # Launch them all!
     return LaunchDescription([
-        is_joystick_arg,
+        use_ros2_control_dec,
         robot_spawner,
-        OpaqueFunction(function=include_joystick),
         gazebo,
-        spawn_entity,
-        diff_drive_spawner,
-        joint_broad_spawner
+        # joystick,
+        # twist_mux,
+        delayed_controller_manager,
+        delayed_diff_drive_spawner,
+        delayed_joint_broad_spawner
     ])
