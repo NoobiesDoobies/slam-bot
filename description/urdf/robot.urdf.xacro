@@ -14,6 +14,10 @@
 
   <xacro:include filename="$(find slam_bot)/description/urdf/imu.xacro" />
 
+  <!-- <xacro:if value="$(arg sim_mode)"> -->
+    <xacro:include filename="$(find slam_bot)/description/urdf/gazebo_ground_truth.xacro" />
+  <!-- </xacro:if> -->
+
   <xacro:if value="$(arg use_ros2_control)">
     <xacro:include filename="$(find slam_bot)/description/ros2_control/ros2_control.xacro" />
     <xacro:diffbot_ros2_control
