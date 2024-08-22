@@ -35,6 +35,10 @@
           <visualize>true</visualize>
           <topic>imu</topic>
           <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+            <ros>
+                <namespace>diffbot</namespace>
+                <remapping>imu_plugin/out:=imu</remapping>
+            </ros>
             <topicName>imu</topicName>
             <bodyName>imu_link</bodyName>
             <updateRateHZ>10.0</updateRateHZ>
