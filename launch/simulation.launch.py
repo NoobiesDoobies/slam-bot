@@ -4,11 +4,11 @@ from ament_index_python.packages import get_package_share_directory
 
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.actions import IncludeLaunchDescription, TimerAction, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration, PythonExpression
 from launch.actions import RegisterEventHandler, DeclareLaunchArgument
-from launch.event_handlers import OnProcessStart
+from launch.event_handlers import OnProcessStart, OnProcessExit
 
 from launch_ros.actions import Node
 
@@ -59,6 +59,19 @@ def generate_launch_description():
     controller_params_file = os.path.join(get_package_share_directory(package_name),'config','diffbot_controllers.yaml')
 
 
+    gazebo_params_file = os.path.join(get_package_share_directory(package_name),'config','gazebo_params.yaml')
+
+    # Include the Gazebo launch file, provided by the gazebo_ros package
+    gazebo = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
+                    launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file}.items()
+             )
+    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+                        arguments=['-topic', 'robot_description',
+                                   '-entity', 'my_bot'],
+                        output='screen')
+
     diff_drive_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -73,19 +86,12 @@ def generate_launch_description():
         arguments=["joint_state_broadcaster"],
     )
 
+    # diffdrive controller 
+    diff_drive_controller = ExecuteProcess(
+        cmd=['ros2 control load_controller --set-state active diffbot_base_controller'],
+        output='screen'
+    )
 
-    gazebo_params_file = os.path.join(get_package_share_directory(package_name),'config','gazebo_params.yaml')
-
-    # Include the Gazebo launch file, provided by the gazebo_ros package
-    gazebo = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-                    launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file}.items()
-             )
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
-                        arguments=['-topic', 'robot_description',
-                                   '-entity', 'my_bot'],
-                        output='screen')
 
     # Launch them all!
     return LaunchDescription([
@@ -97,5 +103,6 @@ def generate_launch_description():
         # twist_mux,
         # delayed_controller_manager,
         diff_drive_spawner,
-        joint_broad_spawner
+        joint_broad_spawner,
+
     ])

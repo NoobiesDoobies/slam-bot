@@ -7,8 +7,12 @@
 
   <xacro:include filename="$(find slam_bot)/description/urdf/robot_core.xacro" />
 
+  <xacro:include filename="$(find slam_bot)/description/urdf/inertial_macros.xacro" />
+
   <!-- Import Rviz colors -->
   <xacro:include filename="$(find slam_bot)/description/urdf/diffbot.materials.xacro" />
+
+  <xacro:include filename="$(find slam_bot)/description/urdf/imu.xacro" />
 
   <xacro:if value="$(arg use_ros2_control)">
     <xacro:include filename="$(find slam_bot)/description/ros2_control/ros2_control.xacro" />

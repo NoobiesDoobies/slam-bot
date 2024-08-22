@@ -39,12 +39,18 @@
         </hardware>
       </xacro:if>
       <joint name="${prefix}left_wheel_joint">
-        <command_interface name="velocity" />
+        <command_interface name="velocity">
+          <param name="min">-10</param>
+          <param name="max">10</param>
+        </command_interface>
         <state_interface name="position" />
         <state_interface name="velocity" />
       </joint>
       <joint name="${prefix}right_wheel_joint">
-        <command_interface name="velocity" />
+        <command_interface name="velocity">
+          <param name="min">-10</param>
+          <param name="max">10</param>
+        </command_interface>
         <state_interface name="position" />
         <state_interface name="velocity" />
       </joint>
@@ -64,11 +70,18 @@
 
     </ros2_control>
 
-    <xacro:if value="${use_mock_hardware}">
+    <gazebo>
+      <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+        <parameters>$(find slam_bot)/config/diffbot_controllers.yaml</parameters>
+        <parameters>$(find slam_bot)/config/gaz_ros2_ctl_use_sim.yaml</parameters>
+      </plugin>
+    </gazebo>
+
+    <!-- <xacro:if value="${use_mock_hardware}">
       <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
         <parameters>$(find slam_bot)/config/diffbot_controllers.yaml</parameters>
       </plugin>
-    </xacro:if>
+    </xacro:if> -->
 
   </xacro:macro>
 
