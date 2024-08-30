@@ -61,15 +61,24 @@ def generate_launch_description():
 
     gazebo_params_file = os.path.join(get_package_share_directory(package_name),'config','gazebo_params.yaml')
 
+    world_file = os.path.join(
+        get_package_share_directory("slam_bot"),
+        # "worlds", "simple_wall_following.world"
+        # "worlds", "maze_3_6x6.world"
+        # "worlds", "self_made_maze.world"
+        "worlds", "cafe.world"
+    )
+
     # Include the Gazebo launch file, provided by the gazebo_ros package
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-                    launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file}.items()
+                    launch_arguments={'world': world_file, 'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file }.items()
              )
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
-                                   '-entity', 'my_bot'],
+                                   '-entity', 'my_bot',
+                                   '-x', '0', '-y', '-1', '-z', '0.05',],
                         output='screen')
 
     diff_drive_spawner = Node(
