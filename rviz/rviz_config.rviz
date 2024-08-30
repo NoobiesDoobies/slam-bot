@@ -16,6 +16,7 @@ Panels:
         - /RGB1
         - /RGB1/Topic1
         - /Depth1
+        - /Depth1/Status1
         - /Depth1/Topic1
       Splitter Ratio: 0.5
     Tree Height: 544
@@ -123,20 +124,57 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /robot_description
-      Enabled: false
+      Enabled: true
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        caster_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        chassis:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_cam_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Mass Properties:
         Inertia: false
         Mass: false
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
-      Value: false
+      Value: true
       Visual Enabled: true
     - Alpha: 1
       Auto Size:
@@ -155,7 +193,7 @@ Visualization Manager:
       Color Transformer: RGB8
       Color Transport Hint: raw
       Decay Time: 0
-      Depth Map Topic: /slam_bot/front/depth/image_raw
+      Depth Map Topic: /diffbot/front/depth/image_raw
       Depth Map Transport Hint: raw
       Enabled: true
       Invert Rainbow: false
@@ -189,7 +227,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /slam_bot/front/image_raw
+        Value: /diffbot/front/image_raw
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -203,7 +241,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /slam_bot/front/depth/image_raw
+        Value: /diffbot/front/depth/image_raw
       Value: true
   Enabled: true
   Global Options:
@@ -251,25 +289,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.65937077999115
+      Distance: 7.96470308303833
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.016451600939035416
-        Y: 0.019946208223700523
-        Z: 0.05684053152799606
+        X: 1.1968023777008057
+        Y: -1.3690829277038574
+        Z: -0.18696291744709015
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6603983044624329
+      Pitch: 0.6503980755805969
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.960404872894287
+      Yaw: 2.342226266860962
     Saved: ~
 Window Geometry:
   Depth:
