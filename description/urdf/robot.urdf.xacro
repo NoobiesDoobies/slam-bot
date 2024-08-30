@@ -13,6 +13,7 @@
   <xacro:include filename="$(find slam_bot)/description/urdf/diffbot.materials.xacro" />
 
   <xacro:include filename="$(find slam_bot)/description/urdf/imu.xacro" />
+  <xacro:include filename="$(find slam_bot)/description/urdf/depth_camera.xacro" />
 
   <!-- <xacro:if value="$(arg sim_mode)"> -->
     <xacro:include filename="$(find slam_bot)/description/urdf/gazebo_ground_truth.xacro" />
