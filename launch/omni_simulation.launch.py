@@ -28,7 +28,7 @@ def generate_launch_description():
 
     world_file = os.path.join(
         get_package_share_directory("slam_bot"),
-        "worlds", "simple_office.world"
+        "worlds", "cafe.world"
     )
     # gazebo = IncludeLaunchDescription(
     #             PythonLaunchDescriptionSource([os.path.join(
