@@ -87,18 +87,10 @@ def generate_launch_description():
         arguments=["diffbot_base_controller"],
     )
 
-
-
     joint_broad_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["joint_state_broadcaster"],
-    )
-
-    # diffdrive controller 
-    diff_drive_controller = ExecuteProcess(
-        cmd=['ros2 control load_controller --set-state active diffbot_base_controller'],
-        output='screen'
     )
 
     rviz_config = os.path.join(get_package_share_directory(package_name),'rviz','rviz_config.rviz')
