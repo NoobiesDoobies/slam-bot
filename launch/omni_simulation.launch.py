@@ -28,7 +28,7 @@ def generate_launch_description():
 
     world_file = os.path.join(
         get_package_share_directory("slam_bot"),
-        "worlds", "empty.world"
+        "worlds", "simple_office.world"
     )
     # gazebo = IncludeLaunchDescription(
     #             PythonLaunchDescriptionSource([os.path.join(
@@ -56,13 +56,14 @@ def generate_launch_description():
     )
     params = {'robot_description': robot_description_config}
 
-    rviz_config_file = os.path.join(package_name, 'rviz', 'rviz_config.rviz')
-    
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='both',
-        parameters  =[params]
+        parameters  =[params],
+        remappings=[
+            ('/omni_wheel_controller/cmd_vel', '/cmd_vel'),
+        ],
     )
 
     gz_spawn_entity = Node(
@@ -125,6 +126,8 @@ def generate_launch_description():
     #     ],
     # )
 
+    
+    rviz_config_file = os.path.join(get_package_share_directory(package_name),'rviz','omni_rviz_config.rviz')
     rviz = Node(
         package="rviz2",
         executable="rviz2",
