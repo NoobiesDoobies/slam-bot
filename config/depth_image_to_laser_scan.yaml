@@ -1,0 +1,8 @@
+depthimage_to_laserscan:
+  ros__parameters:
+    scan_time: 0.1
+    range_min: 0.0
+    range_max: 20.0
+    scan_height: 1
+    output_frame: "front_cam_link"
+    use_sim_time: true
