@@ -6,7 +6,7 @@ from launch.actions import ExecuteProcess
 def generate_launch_description():
     return LaunchDescription([
         ExecuteProcess(
-            cmd=['xterm', '-e', 'ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p stamped:=true --remap cmd_vel:=/diffbot_base_controller/cmd_vel'],
+            cmd=['xterm', '-e', 'ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p stamped:=true --remap cmd_vel:=/omni_wheel_controller/cmd_vel'],
             output='screen',
             shell=True
         )

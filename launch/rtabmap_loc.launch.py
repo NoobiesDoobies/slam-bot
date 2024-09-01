@@ -17,13 +17,13 @@ import xacro
 
 
 def generate_launch_description():
+    rtabmap_db = os.path.join(get_package_share_directory('slam_bot'), 'maps', 'rtabmap.db')
 
 
     rtabmap = IncludeLaunchDescription(
             PythonLaunchDescriptionSource([os.path.join(
                 get_package_share_directory('rtabmap_launch'), 'launch', 'rtabmap.launch.py')]),
                 launch_arguments={
-                    'rtabmap_args': "--delete_db_on_start", 
                     'rgb_topic': "/omni_bot/front/image_raw",
                     'depth_topic': "/omni_bot/front/depth/image_raw",
                     'camera_info_topic': "/omni_bot/front/camera_info",
@@ -33,6 +33,11 @@ def generate_launch_description():
                     'imu_topic': "/omni_bot/imu",
                     'qos': "1",
                     'rviz': "false",
+                    'localization': "true",
+                    'rtabmapviz': "true",
+                    # "database_path": rtabmap_db,
+                    "odom_frame_id": "odom",
+                    "rviz": "true",
                     }.items()
             )
     # Launch!
