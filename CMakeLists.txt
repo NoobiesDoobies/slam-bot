@@ -40,11 +40,11 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(
-  PROGRAMS scripts/depth_to_laser_scan_converter.py
-  PROGRAMS scripts/test.py
-  DESTINATION lib/${PROJECT_NAME}
-)
+# install(
+#   PROGRAMS scripts/depth_to_laser_scan_converter.py
+#   PROGRAMS scripts/test.py
+#   DESTINATION lib/${PROJECT_NAME}
+# )
 
 ament_python_install_package(${PROJECT_NAME})
 

@@ -7,19 +7,19 @@ import cv2
 class DepthImageSubscriber(Node):
     def __init__(self):
         super().__init__('depth_image_subscriber')
-        # self.subscription = self.create_subscription(
-        #     Image,
-        #     '/omni_bot/front/depth/image_raw',
-        #     self.listener_callback,
-        #     10)
-        # self.subscription  # prevent unused variable warning
-        
-        self.pcl_subscription = self.create_subscription(
-            PointCloud2,
-            '/omni_bot/front/points',
-            self.pcl_listener_callback,
+        self.subscription = self.create_subscription(
+            Image,
+            '/omni_bot/front/depth/image_raw',
+            self.listener_callback,
             10)
-        self.pcl_subscription  # prevent unused variable warning
+        self.subscription  # prevent unused variable warning
+        
+        # self.pcl_subscription = self.create_subscription(
+        #     PointCloud2,
+        #     '/omni_bot/front/points',
+        #     self.pcl_listener_callback,
+        #     10)
+        # self.pcl_subscription  # prevent unused variable warning
         
         self.publisher = self.create_publisher(LaserScan, '/omni_bot/front/depth/scan', 10)
         self.bridge = CvBridge()
@@ -65,10 +65,10 @@ class DepthImageSubscriber(Node):
             msg.header.frame_id = 'front_cam_link'
             laser_scan_msg.header = msg.header
 
-
-            laser_scan_msg.angle_min = -1.019272/2
-            laser_scan_msg.angle_max = 1.019272/2
-            laser_scan_msg.angle_increment = 1.019272 / cols
+            fov = 1.51844
+            laser_scan_msg.angle_min = -fov/2
+            laser_scan_msg.angle_max = fov/2
+            laser_scan_msg.angle_increment = fov / cols
             laser_scan_msg.time_increment = 0.0
             laser_scan_msg.scan_time = 0.0
             laser_scan_msg.range_min = 0.0
