@@ -108,6 +108,24 @@ def generate_launch_description():
         'log_level', default_value='info',
         description='log level')
 
+    map_server = Node(
+        package='nav2_map_server',
+        executable='map_server',
+        name='map_server',
+        output='screen',
+        parameters=[{
+            'yaml_filename': os.path.join(bringup_dir, 'maps', 'furnished_office.yaml')
+        }],
+    )
+
+    static_transform_publisher_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='link1_broadcaster',
+        arguments=['0', '0', '0', '0', '0', '0', '1', 'map', 'odom'],
+        output='screen',
+    )
+
     load_nodes = GroupAction(
         condition=IfCondition(PythonExpression(['not ', use_composition])),
         actions=[
@@ -190,6 +208,7 @@ def generate_launch_description():
                 parameters=[{'use_sim_time': use_sim_time},
                             {'autostart': autostart},
                             {'node_names': lifecycle_nodes}]),
+            map_server,
         ]
     )
 
@@ -268,5 +287,7 @@ def generate_launch_description():
     # Add the actions to launch all of the navigation nodes
     ld.add_action(load_nodes)
     ld.add_action(load_composable_nodes)
+
+    ld.add_action(static_transform_publisher_node)
 
     return ld

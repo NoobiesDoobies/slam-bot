@@ -14,6 +14,7 @@ setup(
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
         (os.path.join('share', package_name, 'worlds'), glob('worlds/*.world')),
+        (os.path.join('share', package_name, 'maps'), glob('maps/*.*')),
         (os.path.join('share', package_name, 'description'), glob('description/*.*')),
         (os.path.join('share', package_name, 'description/omni_urdf'), glob('description/omni_urdf/*.*')),
         (os.path.join('share', package_name, 'description/omni_urdf/STL'), glob('description/omni_urdf/STL/*.*')),
@@ -34,6 +35,7 @@ setup(
             'robot_localization = slam_bot.localization_node:main',
             "depth_to_laser_scan = slam_bot.depth_to_laser_scan_converter:main",
             'test = slam_bot.test:main',
+            'velocity_remapper = slam_bot.velocity_remapper:main',
         ],
     },
 )

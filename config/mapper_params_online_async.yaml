@@ -12,10 +12,12 @@ slam_toolbox:
     # ROS Parameters
     odom_frame: odom
     map_frame: map
-    base_frame: base_footprint
+    base_frame: base_frame_link
     scan_topic: /scan
-    mode: mapping #localization
-
+    use_map_saver: true
+    # mode: mapping #localization
+    mode: localization
+    
     # if you'd like to immediately start continuing a map at a given pose
     # or at the dock, but they are mutually exclusive, if pose is given
     # will use pose
