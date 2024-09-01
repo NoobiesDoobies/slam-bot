@@ -28,17 +28,17 @@ def generate_launch_description():
 
     world_file = os.path.join(
         get_package_share_directory("slam_bot"),
-        "worlds", "cafe.world"
+        "worlds", "furnished_office.world"
     )
-    # gazebo = IncludeLaunchDescription(
-    #             PythonLaunchDescriptionSource([os.path.join(
-    #                 get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-    #                 launch_arguments={'world': world_file, 'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file }.items()
-    #          )
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-    )
+                    launch_arguments={'world': world_file, 'verbose': 'false', 'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file }.items()
+             )
+    # gazebo = IncludeLaunchDescription(
+    #             PythonLaunchDescriptionSource([os.path.join(
+    #                 get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
+    # )
 
     xacro_file = os.path.join(package_name,
                               'description', 'omni_urdf',
@@ -149,13 +149,13 @@ def generate_launch_description():
         #        on_exit=[load_omni_wheel_controller],
         #     )
         # ),
+        gazebo,
         omni_drive_spawner,
         joint_broad_spawner,
-        gazebo,
         node_robot_state_publisher,
         gz_spawn_entity,
-        # bridge,
+        bridge,
         # velocity_converter,
-        rviz,
+        # rviz,
     ]
     )
