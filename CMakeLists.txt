@@ -17,6 +17,9 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(rclcpp REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -36,5 +39,13 @@ install(
   DIRECTORY config description launch worlds rviz
   DESTINATION share/${PROJECT_NAME}
 )
+
+install(
+  PROGRAMS scripts/depth_to_laser_scan_converter.py
+  PROGRAMS scripts/test.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_python_install_package(${PROJECT_NAME})
 
 ament_package()

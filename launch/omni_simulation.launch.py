@@ -135,6 +135,12 @@ def generate_launch_description():
         output="log",
         arguments=["-d", rviz_config_file],
     )
+
+    teleop = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('slam_bot'), 'launch', 'teleop_keyboard.launch.py')
+        ),
+    )
     
     return LaunchDescription([
         # RegisterEventHandler(
@@ -156,6 +162,7 @@ def generate_launch_description():
         gz_spawn_entity,
         bridge,
         # velocity_converter,
-        # rviz,
+        rviz,
+        teleop
     ]
     )
