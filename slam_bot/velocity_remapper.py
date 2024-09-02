@@ -6,6 +6,8 @@ class VelocityRemapper(Node):
     def __init__(self):
         super().__init__('velocity_remapper')
         self.publisher = self.create_publisher(TwistStamped, '/omni_wheel_controller/cmd_vel', 10)
+        self.publisher2 = self.create_publisher(TwistStamped, '/diffbot_base_controller/cmd_vel', 10)
+
         self.subscription = self.create_subscription(Twist, '/cmd_vel', self.cmd_vel_callback, 10)
         self.subscription
 

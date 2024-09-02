@@ -63,10 +63,11 @@
     </visual>
   </link>
    -->
+  <xacro:include filename="$(find slam_bot)/description/omni_urdf/inertial_macros.xacro"/>
 
   <xacro:include filename="$(find slam_bot)/description/omni_urdf/depth_camera.xacro"/>
   <xacro:include filename="$(find slam_bot)/description/omni_urdf/imu.xacro"/>
-  <!-- <xacro:include filename="$(find slam_bot)/description/omni_urdf/lidar.xacro"/> -->
+  <xacro:include filename="$(find slam_bot)/description/omni_urdf/lidar.xacro"/>
 
   <xacro:omnibot_gazebo prefix=""/>
   <xacro:omnibot_ros2_control name="omnibot" use_sim="$(arg use_sim)"/>

@@ -66,7 +66,8 @@ def generate_launch_description():
         # "worlds", "simple_wall_following.world"
         # "worlds", "maze_3_6x6.world"
         # "worlds", "self_made_maze.world"
-        "worlds", "cafe.world"
+        # "worlds", "cafe.world"
+        "worlds", "furnished_office.world"
     )
 
     # Include the Gazebo launch file, provided by the gazebo_ros package
@@ -93,7 +94,7 @@ def generate_launch_description():
         arguments=["joint_state_broadcaster"],
     )
 
-    rviz_config = os.path.join(get_package_share_directory(package_name),'rviz','rviz_config.rviz')
+    rviz_config = os.path.join(get_package_share_directory(package_name),'rviz','omni_rviz_config.rviz')
 
     rviz2 = Node(
         package='rviz2',

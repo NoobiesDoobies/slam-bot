@@ -34,7 +34,9 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('slam_bot'),
             'maps',
-            'my_map.yaml'))
+            # 'furnished_office.yaml'))
+            'lidar_map.yaml'))
+
     # map_dir = os.path.join(get_package_share_directory('nav2_map_server'), 'config', 'turtlebot_area.yaml')
 
     param_dir = LaunchConfiguration(
@@ -81,13 +83,28 @@ def generate_launch_description():
                 'params_file': param_dir}.items(),
         ),
 
-        # Node(
-        #     package='rviz2',
-        #     executable='rviz2',
-        #     name='rviz2',
-        #     arguments=['-d', rviz_config_dir],
-        #     parameters=[{'use_sim_time': use_sim_time}],
-        #     output='screen'),
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            arguments=['-d', rviz_config_dir],
+            parameters=[{'use_sim_time': use_sim_time}],
+            output='screen'),
 
-        static_transform_publisher_node
+        # Node(
+        #     package='slam_bot',
+        #     executable='depth_to_laser_scan_converter',
+        #     name='depth_to_laser_scan_converter',
+        #     output='screen'
+        # ),
+            
+        # Node(
+        #     package='slam_bot',
+        #     executable='velocity_remapper',
+        #     name='velocity_remapper',
+        #     output='screen'
+        # ),
+
+
+        # static_transform_publisher_node
     ])
